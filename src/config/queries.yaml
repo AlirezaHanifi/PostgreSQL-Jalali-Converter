@@ -1,0 +1,69 @@
+create_table: >
+    CREATE TABLE IF NOT EXISTS {schema}.{table}
+    (
+        date            DATE PRIMARY KEY,
+        jdate           VARCHAR(10) NOT NULL,
+        jyear_number    INTEGER     NOT NULL,
+        jmonth_number   INTEGER     NOT NULL,
+        jday_number     INTEGER     NOT NULL,
+        jweekday_number INTEGER     NOT NULL,
+        jweek_number    INTEGER     NOT NULL,
+        jquarter_number INTEGER     NOT NULL,
+        jquarter_name   VARCHAR(20) NOT NULL,
+        jmonth_name     VARCHAR(20) NOT NULL,
+        jweekday_name   VARCHAR(20) NOT NULL,
+        is_holiday      BOOLEAN     NOT NULL,
+        holiday_events  VARCHAR(100)
+    );
+
+create_target_table_index: >
+    CREATE INDEX IF NOT EXISTS 
+        {target_schema}_{target_table}_jdate_idx ON {target_schema}.{target_table} (jdate);
+
+truncate_source_table: >
+    TRUNCATE TABLE {source_schema}.{source_table};
+
+merge_source_into_target: >
+    INSERT INTO {target_schema}.{target_table}
+        (date,
+        jdate,
+        jyear_number,
+        jmonth_number,
+        jday_number,
+        jweekday_number,
+        jweek_number,
+        jquarter_number,
+        jquarter_name,
+        jmonth_name,
+        jweekday_name,
+        is_holiday,
+        holiday_events)
+    SELECT date,
+        jdate,
+        jyear_number,
+        jmonth_number,
+        jday_number,
+        jweekday_number,
+        jweek_number,
+        jquarter_number,
+        jquarter_name,
+        jmonth_name,
+        jweekday_name,
+        is_holiday,
+        holiday_events
+    FROM {source_schema}.{source_table}
+    ON CONFLICT (date)
+        DO UPDATE
+        SET date = EXCLUDED.date,
+            jdate = EXCLUDED.jdate,
+            jyear_number = EXCLUDED.jyear_number,
+            jmonth_number = EXCLUDED.jmonth_number,
+            jday_number = EXCLUDED.jday_number,
+            jweekday_number = EXCLUDED.jweekday_number,
+            jweek_number = EXCLUDED.jweek_number,
+            jquarter_number = EXCLUDED.jquarter_number,
+            jquarter_name = EXCLUDED.jquarter_name,
+            jmonth_name = EXCLUDED.jmonth_name,
+            jweekday_name = EXCLUDED.jweekday_name,
+            is_holiday = EXCLUDED.is_holiday,
+            holiday_events = EXCLUDED.holiday_events;
