@@ -23,6 +23,9 @@ create_target_table_index: >
 truncate_source_table: >
     TRUNCATE TABLE {source_schema}.{source_table};
 
+delete_source_table: >
+    DROP TABLE IF EXISTS {source_schema}.{source_table};
+
 merge_source_into_target: >
     INSERT INTO {target_schema}.{target_table}
         (date,

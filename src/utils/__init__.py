@@ -3,6 +3,7 @@ from .logger import log_configure
 from .table_worker import (
     create_source_and_target_tables,
     create_target_table_index,
+    delete_source_table,
     merge_source_into_target,
     truncate_source_table,
 )

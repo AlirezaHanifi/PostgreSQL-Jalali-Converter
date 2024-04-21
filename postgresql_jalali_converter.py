@@ -18,6 +18,7 @@ from src import get_calendar_with_jalali_and_holidays
 from src.utils import (
     create_source_and_target_tables,
     create_target_table_index,
+    delete_source_table,
     log_configure,
     merge_source_into_target,
     read_yaml_file,
@@ -124,6 +125,11 @@ def main(
         date_ranges=date_ranges,
         chunk_size=chunk_size,
         config_details=config_details,
+        conn_details=conn_details,
+        tables_details=tables_details,
+    )
+    delete_source_table(
+        query=config_details["delete_source_table"],
         conn_details=conn_details,
         tables_details=tables_details,
     )

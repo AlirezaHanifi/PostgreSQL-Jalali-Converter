@@ -79,3 +79,19 @@ def truncate_source_table(
     except (Error, ConnectionError) as e:
         logger.error(f"[❌] Error truncating '{schema}.{table}' table: {e}")
         raise e
+
+
+def delete_source_table(
+    query: str, conn_details: Dict[str, str], tables_details: Dict[str, Dict[str, str]]
+):
+    schema, table = tables_details["source"].values()
+    formatted_query = query.format(
+        source_schema=schema,
+        source_table=table,
+    )
+    try:
+        run_postgresql_query(formatted_query, conn_details)
+        logger.info(f"[✅] Table '{schema}.{table}' deleted successfully.")
+    except (Error, ConnectionError) as e:
+        logger.error(f"[❌] Error deleting '{schema}.{table}' table: {e}")
+        raise e
