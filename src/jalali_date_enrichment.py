@@ -155,8 +155,6 @@ def get_calendar_with_jalali_and_holidays(
         axis=1,
     )
     logger.info(
-        "[✅] Successfully added the date range (%s - %s) to the database.",
-        start_date,
-        end_date,
+        f"[✅] Successfully concated the date range ({start_date} - {end_date}).",
     )
     return basic_calendar_df
