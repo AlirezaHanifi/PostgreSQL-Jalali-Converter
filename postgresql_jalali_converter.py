@@ -10,8 +10,10 @@ This module orchestrates the process of:
 
 import os
 from datetime import datetime, timedelta
+from os.path import dirname, join
 from typing import Dict
 
+from dotenv import load_dotenv
 from loguru import logger
 
 from src import get_calendar_with_jalali_and_holidays
@@ -25,6 +27,9 @@ from src.utils import (
     truncate_source_table,
     write_dataframe_to_postgres,
 )
+
+dotenv_path = join(dirname(__file__), ".env")
+load_dotenv(dotenv_path, override=True)
 
 CONN_DETAILS = {
     "username": os.environ["PG_USERNAME"],
